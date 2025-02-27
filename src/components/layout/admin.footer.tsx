@@ -1,5 +1,4 @@
 "use client";
-
 import { Layout } from "antd";
 
 const AdminFooter = () => {
@@ -8,9 +7,10 @@ const AdminFooter = () => {
   return (
     <>
       <Footer style={{ textAlign: "center" }}>
-        Admin Page ©{new Date().getFullYear()} Created by Thanh Tuyen
+        Admin Web ©{new Date().getFullYear()} Created by @ThanhTuyen
       </Footer>
     </>
   );
 };
+
 export default AdminFooter;

@@ -1,57 +1,85 @@
 "use client";
-import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Flex } from "antd";
+import { Button, Col, Divider, Form, Input, Row, Typography } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import Link from "next/link";
+
+const { Text } = Typography;
 
 const Login = () => {
-  interface RegisterFormValues {
-    username: string;
-    password: string;
-    remember?: boolean;
-  }
+  const onFinish = async (values: any) => {};
 
-  const onFinish = (values: RegisterFormValues) => {
-    console.log("Received values of form: ", values);
-  };
   return (
-    <Form
-      name="login"
-      initialValues={{ remember: true }}
-      style={{ maxWidth: 360 }}
-      onFinish={onFinish}
-    >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Please input your Username!" }]}
-      >
-        <Input prefix={<UserOutlined />} placeholder="Username" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: "Please input your Password!" }]}
-      >
-        <Input
-          prefix={<LockOutlined />}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
-      <Form.Item>
-        <Flex justify="space-between" align="center">
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <a href="">Forgot password</a>
-        </Flex>
-      </Form.Item>
+    <Row justify="center" style={{ marginTop: "50px" }}>
+      <Col xs={24} md={16} lg={8}>
+        <fieldset
+          style={{
+            padding: "25px",
+            margin: "5px",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            backgroundColor: "#fff",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <legend style={{ fontSize: "18px", fontWeight: "bold" }}>
+            Đăng Nhập
+          </legend>
+          <Form
+            name="basic"
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+          >
+            <Form.Item
+              label={<Text strong>Email</Text>}
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập email!",
+                },
+              ]}
+            >
+              <Input size="large" placeholder="Nhập email của bạn" />
+            </Form.Item>
 
-      <Form.Item>
-        <Button block type="primary" htmlType="submit">
-          Log in
-        </Button>
-        or <a href="">Register now!</a>
-      </Form.Item>
-    </Form>
+            <Form.Item
+              label={<Text strong>Mật khẩu</Text>}
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mật khẩu!",
+                },
+              ]}
+            >
+              <Input.Password size="large" placeholder="Nhập mật khẩu" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block size="large">
+                Đăng nhập
+              </Button>
+            </Form.Item>
+          </Form>
+          <div style={{ textAlign: "center", marginBottom: "10px" }}>
+            <Link href={"/"}>
+              <ArrowLeftOutlined /> Quay lại trang chủ
+            </Link>
+          </div>
+          <Divider />
+          <div style={{ textAlign: "center" }}>
+            <Text>Chưa có tài khoản?</Text>{" "}
+            <Link href={"/auth/register"}>
+              <Text strong style={{ color: "#1677ff" }}>
+                Đăng ký tại đây
+              </Text>
+            </Link>
+          </div>
+        </fieldset>
+      </Col>
+    </Row>
   );
 };
+
 export default Login;
