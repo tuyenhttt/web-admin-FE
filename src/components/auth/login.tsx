@@ -2,27 +2,31 @@
 import { Button, Col, Divider, Form, Input, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { authenticate } from "@/utils/actions";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const { Text } = Typography;
 
 const Login = () => {
+  const router = useRouter();
+
   const onFinish = async (values: any) => {
-    const { email, password } = values;
+    const { username, password } = values;
 
     //trigger sign in
 
-    const res = await authenticate(email, password);
-    console.log("check res:", res);
-
-    // const data = await signIn("credentials", {
-    //   email,
-    //   password,
-    //   redirect: false,
-    // });
-
-    // console.log(data);
+    const res = await authenticate(username, password);
+    console.log("Auth response:", res);
+    if (res?.error) {
+      toast.error(res?.error);
+      if (res?.code === 2) {
+        router.push("/verify");
+      }
+    } else {
+      //redirect to dashboard
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -49,7 +53,7 @@ const Login = () => {
           >
             <Form.Item
               label={<Text strong>Email</Text>}
-              name="email"
+              name="username"
               rules={[
                 {
                   required: true,
