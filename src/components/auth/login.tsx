@@ -17,11 +17,11 @@ const Login = () => {
     //trigger sign in
 
     const res = await authenticate(username, password);
-    console.log("Auth response:", res);
+
     if (res?.error) {
-      toast.error(res?.error);
+      toast.error(<>{res?.error}</>, { autoClose: 5000 });
       if (res?.code === 2) {
-        router.push("/verify");
+        router.push(`/verify/${res?.data?._id}`);
       }
     } else {
       //redirect to dashboard
@@ -43,7 +43,7 @@ const Login = () => {
           }}
         >
           <legend style={{ fontSize: "18px", fontWeight: "bold" }}>
-            Đăng Nhập
+            Login
           </legend>
           <Form
             name="basic"
@@ -57,43 +57,43 @@ const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập email!",
+                  message: "Please input email!",
                 },
               ]}
             >
-              <Input size="large" placeholder="Nhập email của bạn" />
+              <Input size="large" placeholder="Input your email" />
             </Form.Item>
 
             <Form.Item
-              label={<Text strong>Mật khẩu</Text>}
+              label={<Text strong>Password</Text>}
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập mật khẩu!",
+                  message: "Please input password!",
                 },
               ]}
             >
-              <Input.Password size="large" placeholder="Nhập mật khẩu" />
+              <Input.Password size="large" placeholder="Input your password" />
             </Form.Item>
 
             <Form.Item>
               <Button type="primary" htmlType="submit" block size="large">
-                Đăng nhập
+                Login
               </Button>
             </Form.Item>
           </Form>
           <div style={{ textAlign: "center", marginBottom: "10px" }}>
             <Link href={"/"}>
-              <ArrowLeftOutlined /> Quay lại trang chủ
+              <ArrowLeftOutlined /> Back Home
             </Link>
           </div>
           <Divider />
           <div style={{ textAlign: "center" }}>
-            <Text>Chưa có tài khoản?</Text>{" "}
+            <Text>No account yet?</Text>{" "}
             <Link href={"/auth/register"}>
               <Text strong style={{ color: "#1677ff" }}>
-                Đăng ký tại đây
+                Register here!
               </Text>
             </Link>
           </div>

@@ -3,61 +3,34 @@ import { AdminContext } from "@/library/admin.context";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout } from "antd";
 import { useContext } from "react";
-import { DownOutlined, SmileOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
-import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
-const AdminHeader = () => {
-  const { data: session, status } = useSession();
+const AdminHeader = (props: any) => {
+  const { session } = props;
 
+  if (!session) {
+    redirect("/auth/login");
+  }
   const { Header } = Layout;
   const { collapseMenu, setCollapseMenu } = useContext(AdminContext)!;
 
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          2nd menu item (disabled)
-        </a>
-      ),
-      icon: <SmileOutlined />,
-      disabled: true,
-    },
-    {
-      key: "3",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item (disabled)
-        </a>
-      ),
-      disabled: true,
+      label: <span>Settings</span>,
     },
     {
       key: "4",
       danger: true,
-      label: "a danger item",
+      label: (
+        <span onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+          Logout
+        </span>
+      ),
     },
   ];
 
