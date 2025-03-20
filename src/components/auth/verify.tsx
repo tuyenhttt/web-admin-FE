@@ -26,13 +26,13 @@ const Verify = (props: any) => {
 
   const onFinish = async (values: any) => {
     const { _id, code } = values;
-    console.log("check value", values);
+
     const res = await sendRequest<IBackendRes<any>>({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/check-code`,
       method: "POST",
       body: { _id, code },
     });
-    console.log("check res", res);
+
     if (res?.data) {
       message.success("Actived account successfully", 5);
       router.push(`/auth/login`);
@@ -41,7 +41,7 @@ const Verify = (props: any) => {
         <>
           Verify error <br /> {res?.message || "Vui lòng thử lại sau!"}
         </>,
-        { autoClose: 5000 }
+        { autoClose: 2000 }
       );
     }
   };
