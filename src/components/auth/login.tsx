@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalReactive from "@/components/auth/model.reactive";
 import { useState } from "react";
+import ModalChangePassword from "@/components/auth/model.change.password";
 
 const { Text } = Typography;
 
@@ -14,7 +15,9 @@ const Login = () => {
   const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState("S");
+  const [userEmail, setUserEmail] = useState("");
+
+  const [changePassword, setChangePassword] = useState(false);
 
   const onFinish = async (values: any) => {
     const { username, password } = values;
@@ -93,6 +96,9 @@ const Login = () => {
                 <Button type="primary" htmlType="submit" block size="large">
                   Login
                 </Button>
+                <Button type="link" onClick={() => setChangePassword(true)}>
+                  Forgot Password ?
+                </Button>
               </Form.Item>
             </Form>
             <div style={{ textAlign: "center", marginBottom: "10px" }}>
@@ -116,6 +122,10 @@ const Login = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         userEmail={userEmail}
+      />
+      <ModalChangePassword
+        isModalOpen={changePassword}
+        setIsModalOpen={setChangePassword}
       />
     </>
   );
