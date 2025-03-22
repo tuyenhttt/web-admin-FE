@@ -19,7 +19,7 @@ const Register = () => {
       method: "POST",
       body: { email, password, name },
     });
-    console.log("check res", res);
+
     if (res?.data) {
       router.push(`/verify/${res?.data?._id}`);
     } else {
@@ -103,7 +103,7 @@ const Register = () => {
           </Form>
           <div style={{ textAlign: "center", marginBottom: "10px" }}>
             <Link href="/">
-              <ArrowLeftOutlined /> Back Home
+              <ArrowLeftOutlined /> Back to Guest Page
             </Link>
           </div>
           <Divider />

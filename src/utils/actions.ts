@@ -5,6 +5,8 @@ import { revalidateTag } from "next/cache";
 import { sendRequest } from "./api";
 
 export async function authenticate(username: string, password: string) {
+  const session = await auth();
+
   try {
     const r = await signIn("credentials", {
       username: username,
@@ -12,8 +14,19 @@ export async function authenticate(username: string, password: string) {
       // callbackUrl: "/",
       redirect: false,
     });
-    console.log(">>> check r: ", r);
-    return r;
+    if (r?.error) {
+      return r;
+    }
+
+    if (!session?.user) {
+      return {
+        error: "Cannot get information of user",
+        code: 3,
+      };
+    }
+
+    const redirectTo = session.user.role === "admin" ? "/dashboard" : "/home";
+    return { success: true, redirectTo };
   } catch (error) {
     if ((error as any).name === "InvalidEmailPasswordError") {
       return {
