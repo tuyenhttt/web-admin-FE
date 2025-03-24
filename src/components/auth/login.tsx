@@ -23,20 +23,49 @@ const Login = () => {
     const { username, password } = values;
     setUserEmail("");
 
-    //trigger sign in
+    try {
+      const res = await authenticate(username, password);
 
-    const res = await authenticate(username, password);
-
-    if (res?.error) {
-      if (res?.code === 2) {
-        setIsModalOpen(true);
-        setUserEmail(username);
+      if (res?.error) {
+        if (res?.code === 2) {
+          setIsModalOpen(true);
+          setUserEmail(username);
+          return;
+        }
+        toast.error(<>{res?.error}</>, { autoClose: 2000 });
         return;
       }
-      toast.error(<>{res?.error}</>, { autoClose: 2000 });
-    } else {
-      //redirect to dashboard
-      router.push("/dashboard");
+
+      if (res.success) {
+        const isAdmin =
+          username.toLowerCase().includes("admin") ||
+          username === "admin@example.com";
+
+        if (isAdmin) {
+          if (typeof window !== "undefined") {
+            window.location.href = "/dashboard";
+            return;
+          }
+        }
+
+        if (res.redirectTo) {
+          if (res.redirectTo.includes("dashboard")) {
+            if (typeof window !== "undefined") {
+              window.location.href = "/dashboard";
+              return;
+            }
+          } else {
+            router.push(res.redirectTo);
+            return;
+          }
+        }
+
+        router.push("/");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred", { autoClose: 2000 });
     }
   };
 
